@@ -1,6 +1,7 @@
 import pygame
 from .constants import RED, WHITE, BLUE, SQUARE_SIZE
 from checkers.board import Board
+from predict import predict_move
 
 class Game:
     def __init__(self, win):
@@ -68,5 +69,5 @@ class Game:
         return self.board
 
     def ai_move(self, board):
-        self.board = board
+        self.board = predict_move(board)
         self.change_turn()
