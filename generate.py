@@ -12,7 +12,7 @@ warnings.filterwarnings("ignore")
 def generate_data(name):
     df = pd.DataFrame(columns=['Board', 'Move'])
 
-    for gen_no in range(50000):
+    for gen_no in range(12200):
         red_pieces = random.randint(1,12)
         white_pieces = random.randint(1,12)
         red_kings = random.randint(0, red_pieces)
@@ -67,14 +67,14 @@ def generate_data(name):
         data = pd.DataFrame({'Board': [board_arr], 'Move': [move[2]]})
         df = df.append(data, ignore_index=True)
         print("generate:", gen_no)
-        if gen_no % 1000 == 0:
+        if gen_no % 50 == 0:
             df.to_csv(name, index=False)
             
-thread1 = threading.Thread(target=generate_data, args=("data1.csv",))
-thread2 = threading.Thread(target=generate_data, args=("data2.csv",))
 
-thread1.start()
-thread2.start()
+threads = [threading.Thread(target=generate_data, args=(f'data{i}.csv',)) for i in range(8)]
 
-thread1.join()
-thread2.join()
+for thread in threads:
+    thread.start()
+
+for thread in threads:
+    thread.join()
